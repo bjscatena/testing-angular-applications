@@ -1,12 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MatDialog, MatDialogRef, MatSnackBar, MatSnackBarConfig } from '@angular/material';
+import {
+  MatDialog,
+  MatDialogRef,
+  MatSnackBar,
+  MatSnackBarConfig
+} from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 
-import {
-  Contact,
-  ContactService,
-} from '../shared';
+import { Contact, ContactService } from '../shared';
 import { constants } from './contact-edit.constants';
 import { InvalidEmailModalComponent } from '../shared';
 import { InvalidPhoneNumberModalComponent } from '../shared';
@@ -27,8 +29,13 @@ export class ContactEditComponent implements OnInit, OnDestroy {
 
   private modalRef: MatDialogRef<any>;
 
-  constructor(private contactService: ContactService, private route: ActivatedRoute, private router: Router,
-              private snackBar: MatSnackBar, private dialog: MatDialog) { }
+  constructor(
+    private contactService: ContactService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit() {
     this.loadContact();
@@ -48,10 +55,9 @@ export class ContactEditComponent implements OnInit, OnDestroy {
   public loadContact(): void {
     this.route.params.subscribe(params => {
       const id = +params['id'];
-      this.contactService.getContact(id)
-        .then(contact => {
-          this.isLoading = false;
-          this.contact = contact;
+      this.contactService.getContact(id).then(contact => {
+        this.isLoading = false;
+        this.contact = contact;
       });
     });
   }
@@ -62,10 +68,9 @@ export class ContactEditComponent implements OnInit, OnDestroy {
     }
 
     this.displayEditSnackBar();
-    this.contactService.save(contact)
-        .then(() => {
-          this.router.navigate(['/']);
-        });
+    this.contactService.save(contact).then(() => {
+      this.router.navigate(['/']);
+    });
   }
 
   private getKeys(object: Object): string[] {
@@ -74,18 +79,26 @@ export class ContactEditComponent implements OnInit, OnDestroy {
 
   private displayEditSnackBar(): void {
     const message = 'Contact updated';
-    const snackConfig: MatSnackBarConfig = {duration: 2000};
+    const snackConfig: MatSnackBarConfig = { duration: 2000 };
     const actionLabel = '';
 
     this.snackBar.open(message, actionLabel, snackConfig);
   }
 
   private isEmailValid(email: string): boolean {
-    return email === '' || (email !== '' && email.includes('@') && email.includes('.'));
+    return (
+      email === '' ||
+      (email !== '' && email.includes('@') && email.includes('.'))
+    );
   }
 
   private isPhoneNumberValid(phoneNumber: string): boolean {
-    return phoneNumber === '' || (phoneNumber !== '' && phoneNumber.length === 10 && /^\d+$/.test(phoneNumber));
+    return (
+      phoneNumber === '' ||
+      (phoneNumber !== '' &&
+        phoneNumber.length === 10 &&
+        /^\d+$/.test(phoneNumber))
+    );
   }
 
   private isContactValid(contact: Contact): boolean {

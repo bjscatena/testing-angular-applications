@@ -14,7 +14,7 @@ export default class ContactClass {
     return this._id;
   }
 
-  set id(id: number)  {
+  set id(id: number) {
     this._id = id;
   }
 
